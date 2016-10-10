@@ -4,7 +4,8 @@
 from numpy import *
 
 '''
-函数功能
+函数功能：
+
 '''
 
 def predictLabel(finaltraindata, trainlabel, finaltestdata, testlabel):
