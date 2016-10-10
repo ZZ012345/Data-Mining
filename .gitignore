@@ -1,0 +1,7 @@
+# GitºöÂÔÎÄ¼şÄ¿Â¼
+
+# Python
+*.pyc
+
+# PyCharm
+.idea/*
