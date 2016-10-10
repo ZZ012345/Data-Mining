@@ -17,3 +17,4 @@ evals ,evcts = LearnConjMat.learnConjMat(trainmatdata)
 finaltraindata, finaltestdata = ComputePCA.computePCA(trainmatdata, testmatdata, evcts, dimension = 10)
 #对测试数据集进行标签预测，计算正确率
 accuracy = PredictLabel.predictLabel(finaltraindata, trainlabel, finaltestdata, testlabel)
+print accuracy
