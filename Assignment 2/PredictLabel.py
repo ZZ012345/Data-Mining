@@ -5,9 +5,11 @@ from numpy import *
 
 '''
 函数功能：
-
+利用降维后的训练数据对降维后的测试数据进行标签预测，预测方法采用1-NN，
+随后判断与所给的测试数据的标签是否一致，返回预测的正确率
 数据结构：
-
+输入数据集finaltraindata和finaltestdata是数据按列组成的矩阵，输入标签trainlabel和testlabel是list结构，
+返回的预测结果为float型
 '''
 
 def predictLabel(finaltraindata, trainlabel, finaltestdata, testlabel):
