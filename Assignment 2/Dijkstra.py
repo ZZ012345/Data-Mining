@@ -14,13 +14,13 @@ def dijkstra(wgraph, nodenum):
     amount = size(wgraph, 0)
     #初始化用于存放最短距离的list
     mindists = []
-    for i in range(0, amount, 1):
+    for i in range(amount):
         mindists.append(-1)
     mindists[nodenum] = 0 #到自身最短距离为0
     u = [] #用于存放已经求出最短距离的节点
     u.append(nodenum)
     v = [] #用于存放还未求出最短距离的节点
-    for i in range(0, amount, 1):
+    for i in range(amount):
         if i != nodenum:
             v.append(i)
     #添加最近的节点
@@ -34,7 +34,7 @@ def dijkstra(wgraph, nodenum):
     v.remove(lastnode)
 
     while(size(v) != 0):
-        for i in range(0, amount, 1):
+        for i in range(amount):
             if(wgraph[lastnode, i] != -1 and wgraph[lastnode, i] != 0 and i not in u): #取出与上一个添加的节点相连的节点
                 if(mindists[i] != -1 and mindists[i] != 0): #之前图已经连接到该节点
                     if(wgraph[lastnode, i] + mindists[lastnode] < mindists[i]):
@@ -43,7 +43,7 @@ def dijkstra(wgraph, nodenum):
                     mindists[i] = wgraph[lastnode, i] + mindists[lastnode]
         #对于不在u中的节点，选择最近的一个添加到u中
         candnode = [] #候选点集合
-        for i in range(0, amount, 1):
+        for i in range(amount):
             if(i not in u and mindists[i] != -1):
                 candnode.append(i)
         if(size(candnode) == 0):

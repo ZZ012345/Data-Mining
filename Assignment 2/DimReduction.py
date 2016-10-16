@@ -11,7 +11,7 @@ from numpy import *
 '''
 
 def dimReduction(trainmatdata, testmatdata, drmat, dimension):
-    if dimension < 1 or dimension > size(drmat, 0):
+    if dimension > size(drmat, 0):
         print u'输入维数不合法'
         return
     #计算并返回降维结果
