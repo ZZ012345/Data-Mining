@@ -15,4 +15,4 @@ def dimReduction(trainmatdata, testmatdata, drmat, dimension):
         print u'输入维数不合法'
         return
     #计算并返回降维结果
-    return drmat[:, 0:dimension].T * trainmatdata, drmat[:, 0:dimension].T * testmatdata
+    return drmat[:, 0: dimension].T * trainmatdata, drmat[:, 0: dimension].T * testmatdata

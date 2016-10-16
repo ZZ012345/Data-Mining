@@ -3,15 +3,17 @@
 
 from numpy import *
 import Dijkstra
+import MDS
 
 '''
 函数功能：
-
+ISOMAP算法，输入样本数据为trainmatdata和testmatdata，参数k为构造连通图时采用的k-NN算法的参数，
+dimension为所要降的目标维数，函数返回降维结果
 数据结构：
-
+输出result是按列组合而成的降维结果矩阵
 '''
 
-def ISOMAP(trainmatdata, testmatdata, k):
+def isomap(trainmatdata, testmatdata, k, dimenson):
     nodemat = hstack((trainmatdata, testmatdata)) #矩阵合并
     nodenum = size(nodemat, 1) #节点数，即数据量
     wgraph = mat(zeros((nodenum, nodenum))) - 1 #节点的连接权重矩阵，初始值都设为-1，表示无穷大
@@ -25,5 +27,22 @@ def ISOMAP(trainmatdata, testmatdata, k):
         indices = argsort(distances)
         for count in range(0, k + 1, 1):
             wgraph[num1, indices[count]] = distances[indices[count]]
-    mindists = Dijkstra.dijkstra(wgraph, 0)
-    print mindists
+        print num1
+    #将wgraph转化为对称矩阵，即无向图
+    for i in range(0, nodenum, 1):
+        for j in range(0, nodenum, 1):
+            if(wgraph[i, j] != -1):
+                wgraph[j, i] = wgraph[i, j]
+
+    #计算所有点对之间的最短距离
+    distgraph = []
+    for i in range(0, nodenum, 1):
+        mindists = Dijkstra.dijkstra(wgraph, i)
+        distgraph.append(mindists)
+    distgraph = mat(distgraph)
+    print u'最短距离计算完毕'
+
+    #运行MDS算法
+    result = MDS.mds(distgraph, dimenson)
+
+    return result

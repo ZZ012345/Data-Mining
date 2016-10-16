@@ -7,7 +7,7 @@ from numpy import *
 函数功能：
 单源最短路径算法，计算连接权重矩阵wgraph中第nodenum个节点到其他所有节点之间的最短距离
 数据结构：
-
+返回的用于存放最短距离的mindists为list结构
 '''
 
 def dijkstra(wgraph, nodenum):
@@ -48,7 +48,7 @@ def dijkstra(wgraph, nodenum):
                 candnode.append(i)
         if(size(candnode) == 0):
             print u'该图不连通'
-            return
+            return []
         addnode = candnode[0]
         for node in candnode:
             if(mindists[node] < mindists[addnode]):

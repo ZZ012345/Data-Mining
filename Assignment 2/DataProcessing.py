@@ -26,5 +26,9 @@ finaltraindataSVD, finaltestdataSVD = DimReduction.dimReduction(trainmatdata, te
 accuracySVD = PredictLabel.predictLabel(finaltraindataSVD, trainlabel, finaltestdataSVD, testlabel) #对测试数据集进行标签预测，计算正确率
 print accuracySVD
 '''
-k = 30 #k-NN参数k
-ISOMAP.ISOMAP(trainmatdata, testmatdata, k)
+k = 6 #k-NN参数k
+result = ISOMAP.isomap(trainmatdata, testmatdata, k, dimension) #对训练集和测试集数据进行降维
+finaltraindataISOMAP = result[:, 0: size(trainmatdata, 1)]
+finaltestdataISOMAP = result[:, size(trainmatdata, 1): (size(trainmatdata, 1) + size(testmatdata, 1))]
+accuracyISOMAP = PredictLabel.predictLabel(finaltraindataISOMAP, trainlabel, finaltestdataISOMAP, testlabel) #对测试数据集进行标签预测，计算正确率
+print accuracyISOMAP
