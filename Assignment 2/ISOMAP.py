@@ -9,7 +9,7 @@ import MDS
 '''
 函数功能：
 ISOMAP算法，输入样本数据为trainmatdata和testmatdata，参数k为构造连通图时采用的k-NN算法的参数，
-dimension为所要降的目标维数，函数返回降维结果
+type为最短路径算法类型，dimension为所要降的目标维数，函数返回降维结果
 数据结构：
 输出result是按列组合而成的降维结果矩阵
 '''

@@ -7,6 +7,7 @@ import LearnPCAConjMat
 import DimReduction
 import PredictLabel
 import ISOMAP
+import  ISOMAP_fast
 
 file = raw_input(u'请选择数据集，\'1\'代表sonar，\'2\'代表splice：')
 fchoice = True
@@ -51,8 +52,11 @@ print u'SVD降维的正确率为：', accuracySVD
 
 #ISOMAP
 k = 6 #k-NN参数k
-type = 'dijkstra' #最短距离算法类型，可以选择'dijkstra'或'floyd'
-result = ISOMAP.isomap(trainmatdata, testmatdata, k, type, dimension) #对训练集和测试集数据进行降维
+type = 'dijkstra_fast' #最短距离算法类型，可以选择'dijkstra_fast'、'dijkstra'或'floyd'
+if(type == 'dijkstra_fast'):
+    result = ISOMAP_fast.isomap_fast(trainmatdata, testmatdata, k, dimension)
+else:
+    result = ISOMAP.isomap(trainmatdata, testmatdata, k, type, dimension) #对训练集和测试集数据进行降维
 if(size(result) != 0):
     finaltraindataISOMAP = result[:, 0: size(trainmatdata, 1)]
     finaltestdataISOMAP = result[:, size(trainmatdata, 1): (size(trainmatdata, 1) + size(testmatdata, 1))]
