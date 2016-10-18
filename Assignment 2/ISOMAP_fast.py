@@ -40,7 +40,6 @@ def isomap_fast(trainmatdata, testmatdata, k, dimenson):
     for i in range(1, nodenum):
         mindists = Dijkstra_fast.dijkstra_fast(wgraph, i)
         distgraph.append(mindists)
-        print i
     distgraph = mat(distgraph)
 
     #运行MDS算法
