@@ -29,33 +29,35 @@ def kmeans(data, k):
     convergence = False
     while(not convergence):
         newclusters = [] #存储各个数据所属的新的聚类
-        #对所有数据点选择聚类中心
+        #对所有数据点选择所属聚类
         for i in range(datanum):
             dists = []
             for j in range(k):
                 #计算距离，采用l1范式
                 dist = 0
-                for k in range(datadim):
-                    dist = dist + abs(data[k][i] - center[k][j])
+                for m in range(datadim):
+                    dist = dist + float(abs((data[m, i]) - center[j][m]))
                 dists.append(dist)
             #选择最近的聚类中心
-            indices = argsort(dists)
-            newclusters.append(indices[0])
+            newclusters.append(dists.index(min(dists)))
         #判断聚类是否发生变化，即是否收敛
         convergence = True
         for i in range(datanum):
             if(clusters[i] != newclusters[i]):
                 convergence = False
+                clusters = newclusters
                 break
         #未收敛，计算新的聚类中心
         if(not convergence):
-            clusterset = [[None]] * k #存储每个聚类中的数据的下标
+            clusterset = [] #存储每个聚类中的数据的下标
+            for i in range(k):
+                clusterset.append([])
             for i in range(datanum):
-                clusterset[newclusters[datanum]].append(datanum)
+                clusterset[newclusters[i]].append(i)
             for i in range(k):
                 datasum = mat(zeros((datadim, 1)))
-                for singledata in clusterset[i]:
-                    datasum = datasum + singledata
+                for j in clusterset[i]:
+                    datasum = datasum + data[:, j]
                 datasum = datasum / size(clusterset[i])
                 center[i] = datasum
 
