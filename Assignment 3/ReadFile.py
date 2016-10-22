@@ -7,7 +7,7 @@ from numpy import *
 函数功能：
 从当前目录的filename文件中提取数据，返回样本矩阵和标签
 数据结构：
-样本矩阵每一列代表一个样本，数据类型为float，标签的数据结构为由str组成的list，每个样本都有一个与之对应的标签
+样本矩阵每一列代表一个样本，数据类型为float，标签的数据结构为由int组成的list，每个样本都有一个与之对应的标签
 '''
 
 def readFile(filename):
@@ -26,7 +26,7 @@ def readFile(filename):
                 flinedata.append(float(linedata[count]))
                 count = count + 1
             #存储标签
-            label.append(linedata[count])
+            label.append(int(linedata[count]))
             #存储特征
             data.append(flinedata)
 

@@ -5,9 +5,9 @@ from numpy import *
 
 '''
 函数功能：
-
+kmeans聚类算法，输入数据data，参数为k，输出用于存储每个数据所属聚类的clusters
 数据结构：
-
+data为mat结构，每一列代表一个数据，clusters为list结构，对应每个数据所属聚类的下标
 '''
 
 def kmeans(data, k):
@@ -27,16 +27,21 @@ def kmeans(data, k):
         clusters.append(0)
 
     convergence = False
+    connumber = 0
     while(not convergence):
+        print u'迭代次数：', (connumber + 1)
         newclusters = [] #存储各个数据所属的新的聚类
         #对所有数据点选择所属聚类
         for i in range(datanum):
+            print i
+            nowdata = data[:, i]
             dists = []
             for j in range(k):
                 #计算距离，采用l1范式
-                dist = 0
+                dist = 0.0
+                temp = nowdata - center[j]
                 for m in range(datadim):
-                    dist = dist + float(abs((data[m, i]) - center[j][m]))
+                    dist = dist + abs(temp[m])
                 dists.append(dist)
             #选择最近的聚类中心
             newclusters.append(dists.index(min(dists)))
@@ -60,5 +65,7 @@ def kmeans(data, k):
                     datasum = datasum + data[:, j]
                 datasum = datasum / size(clusterset[i])
                 center[i] = datasum
+        connumber = connumber + 1
+    print u'迭代次数：', connumber
 
     return clusters

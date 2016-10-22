@@ -4,9 +4,15 @@
 from numpy import *
 
 import ReadFile
-import  Kmeans
+import Kmeans
+import KmeansPurityGini1
 
-filename = 'german.txt'
+filename = 'mnist.txt'
+#filename = 'german.txt'
+
 data, label = ReadFile.readFile(filename) #读取数据
-clusters = Kmeans.kmeans(data, 2)
+k = 10 #kmeans的参数k
+clusters = Kmeans.kmeans(data, k) #kmeans聚类
 print clusters
+#purity, giniindex = KmeansPurityGini1.kmeansPurityGini1(label, clusters) #计算purity和gini index
+#print purity, giniindex
