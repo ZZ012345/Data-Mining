@@ -11,10 +11,10 @@ from numpy import *
 '''
 
 def readFile(filename):
+    data = []
+    label = []
     #打开文件
     with open('./' + filename, 'r') as f:
-        data = []
-        label = []
         #按行读取
         for line in f.readlines():
             #按逗号分隔提取数据
@@ -29,5 +29,10 @@ def readFile(filename):
             label.append(int(linedata[count]))
             #存储特征
             data.append(flinedata)
+    # 将german数据集中的-1类标转化为0，便于后续处理
+    if (filename == 'german.txt'):
+        for i in range(size(label)):
+            if (label[i] == -1):
+                label[i] = 0
 
     return mat(data).T, label

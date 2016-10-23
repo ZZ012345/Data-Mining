@@ -29,11 +29,9 @@ def kmeans(data, k):
     convergence = False
     connumber = 0
     while(not convergence):
-        print u'迭代次数：', (connumber + 1)
         newclusters = [] #存储各个数据所属的新的聚类
         #对所有数据点选择所属聚类
         for i in range(datanum):
-            print i
             nowdata = data[:, i]
             dists = []
             for j in range(k):
@@ -66,6 +64,6 @@ def kmeans(data, k):
                 datasum = datasum / size(clusterset[i])
                 center[i] = datasum
         connumber = connumber + 1
-    print u'迭代次数：', connumber
+        print u'迭代次数：', connumber
 
     return clusters
