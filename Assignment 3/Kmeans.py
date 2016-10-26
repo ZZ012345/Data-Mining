@@ -6,6 +6,7 @@ from numpy import *
 '''
 函数功能：
 kmeans聚类算法，输入数据data，参数为k，输出用于存储每个数据所属聚类的clusters
+注意，该算法中的距离度量采用L1范式
 数据结构：
 data为mat结构，每一列代表一个数据，clusters为list结构，对应每个数据所属聚类的下标
 '''
