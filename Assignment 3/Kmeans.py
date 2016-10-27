@@ -38,9 +38,7 @@ def kmeans(data, k):
             for j in range(k):
                 #计算距离，采用l1范式
                 dist = 0.0
-                temp = nowdata - center[j]
-                for m in range(datadim):
-                    dist = dist + abs(temp[m])
+                dist = dist + sum(abs(nowdata - center[j]))
                 dists.append(dist)
             #选择最近的聚类中心
             newclusters.append(dists.index(min(dists)))
