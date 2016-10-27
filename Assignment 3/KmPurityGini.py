@@ -5,12 +5,12 @@ from numpy import *
 
 '''
 函数功能：
-根据kmeans聚类结果计算purity和gini index，输入的是每个数据的标签和聚类以及参数k，输出purity和gini index
+根据kmeans/kmedoids聚类结果计算purity和gini index，输入的是每个数据的标签和聚类以及参数k，输出purity和gini index
 数据结构：
 label和clusters是由int构成的list结构，它们之间一一对应，purity和gini index为float型
 '''
 
-def kmeansPurityGini(label, clusters, k):
+def kmPurityGini(label, clusters, k):
     C = mat(zeros((k, k))) #confusion matrix
     for i in range(size(label)):
         C[label[i], clusters[i]] = C[label[i], clusters[i]] + 1

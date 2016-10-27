@@ -14,7 +14,6 @@ data为mat结构，每一列代表一个数据，clusters为list结构，对应�
 def kmedoids(data, k):
     #计算距离矩阵
     distgraph = computedistgraph(data)
-    print distgraph
     #随机选择k个中心点
     center = [] #存储中心点的下标
     datanum = size(data, 1)
@@ -32,12 +31,13 @@ def kmedoids(data, k):
         mindist = distgraph[i, center[0]]
         for j in range(1, k):
             dist = distgraph[i, center[j]]
-            if(dist < mindist and dist != 0):
+            if(dist < mindist):
                 index = center[j]
                 mindist = dist
         clusters.append(index)
 
     converge = False
+    convnum = 0
     while(not converge):
         costs = [] #存储用a替换b的代价
         newclusters = [] #存储每次替换后对应的新的聚类
@@ -58,7 +58,7 @@ def kmedoids(data, k):
                     mindist = distgraph[i, center_[0]]
                     for j in range(1, k):
                         dist = distgraph[i, center_[j]]
-                        if (dist < mindist and dist != 0):
+                        if (dist < mindist):
                             index = center_[j]
                             mindist = dist
                     dcost = distgraph[i, index] - distgraph[i, clusters[i]]
@@ -68,6 +68,28 @@ def kmedoids(data, k):
                 costs.append(sum(dcosts))
                 #存储新的聚类
                 newclusters.append(newcluster)
+        #取最小代价
+        mincost = min(costs)
+        indice = costs.index(mincost)
+        if(mincost < 0):
+            #更新聚类
+            clusters = newclusters[indice]
+            #更新center和other
+            b = center[indice % k]
+            a = other[(indice - indice % k) / k]
+            center.remove(b)
+            center.append(a)
+            other.remove(a)
+            other.append(b)
+            convnum = convnum + 1
+            print u'迭代次数：', convnum
+        else:
+            converge = True
+
+    #对聚类结果进行转换，方便后续计算purity和gini index
+    clusters = transclusters(clusters, center)
+
+    return clusters
 
 
 def computedistgraph(data):
@@ -80,3 +102,9 @@ def computedistgraph(data):
             distgraph[i, j] = dist
             distgraph[j, i] = dist
     return distgraph
+
+def transclusters(clusters, center):
+    newclusters = []
+    for i in clusters:
+        newclusters.append(center.index(i))
+    return newclusters
