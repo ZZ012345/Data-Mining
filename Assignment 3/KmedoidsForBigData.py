@@ -5,16 +5,15 @@ from numpy import *
 
 '''
 函数功能：
-kmedoids聚类算法，该算法在替换中心点时遍历所有选择并在其中选择最佳替换，
+适用于大数据的kmedoids聚类算法，
+该算法在替换中心点时遍历所有选择并在其中选择最佳替换，并且不会存储距离矩阵以防内存不够，
 输入数据data，参数为k，输出用于存储每个数据所属聚类的clusters
 注意，该算法中的距离度量采用L1范式
 数据结构：
 data为mat结构，每一列代表一个数据，clusters为list结构，对应每个数据所属聚类的下标
 '''
 
-def kmedoids(data, k):
-    #计算距离矩阵
-    distgraph = computedistgraph(data)
+def kmedoidsForBigData(data, k):
     #随机选择k个中心点
     center = [] #存储中心点的下标
     datanum = size(data, 1)
@@ -29,9 +28,9 @@ def kmedoids(data, k):
     clusters = [] #存储每个数据所属聚类的下标
     for i in range(datanum):
         index = center[0]
-        mindist = distgraph[i, center[0]]
+        mindist = sum(abs(data[:, i] - data[:, center[0]]))
         for j in range(1, k):
-            dist = distgraph[i, center[j]]
+            dist = sum(abs(data[:, i] - data[:, center[j]]))
             if(dist < mindist):
                 index = center[j]
                 mindist = dist
@@ -53,13 +52,13 @@ def kmedoids(data, k):
                 #对每个数据计算新的所属聚类
                 for i in range(datanum):
                     index = center_[0]
-                    mindist = distgraph[i, center_[0]]
+                    mindist = sum(abs(data[:, i] - data[:, center_[0]]))
                     for j in range(1, k):
-                        dist = distgraph[i, center_[j]]
+                        dist = sum(abs(data[:, i] - data[:, center_[j]]))
                         if (dist < mindist):
                             index = center_[j]
                             mindist = dist
-                    dcost = distgraph[i, index] - distgraph[i, clusters[i]]
+                    dcost = sum(abs(data[:, i] - data[:, index])) - sum(abs(data[:, i] - data[:, clusters[i]]))
                     dcosts.append(dcost)
                     newcluster.append(index)
                 #计算并存储总的代价
@@ -89,17 +88,6 @@ def kmedoids(data, k):
 
     return clusters
 
-
-def computedistgraph(data):
-    datanum = size(data, 1)
-    distgraph = mat(zeros((datanum, datanum)))
-    for i in range(datanum):
-        for j in range(i + 1, datanum):
-            dist = 0.0
-            dist = dist + sum(abs(data[:, i] - data[:, j]))
-            distgraph[i, j] = dist
-            distgraph[j, i] = dist
-    return distgraph
 
 def transclusters(clusters, center):
     newclusters = []

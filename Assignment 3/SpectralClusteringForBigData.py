@@ -8,28 +8,24 @@ import FastKmedoidsForBigData
 
 '''
 函数功能：
-谱聚类算法，输入数据为data，构建邻接矩阵时所用的kNN算法的参数为n，kmedoids聚类时参数为k，
+适用于大数据的谱聚类算法，该算法并不会存储距离矩阵以防内存不够，
+输入数据为data，构建邻接矩阵时所用的kNN算法的参数为n，kmedoids聚类时参数为k，
 kmedoids算法类型为kmedoidtype，输出聚类结果clusters
 数据结构：
 data为mat结构，每一列代表一个数据，clusters为list结构，对应每个数据所属聚类的下标
 '''
 
-def spectralClustering(data, n, k, kmedoidstype):
+def spectralClusteringForBigData(data, n, k, kmedoidstype):
     datanum = size(data, 1)
-    #构建距离矩阵
-    distgraph = mat(zeros([datanum, datanum]))
-    for i in range(datanum):
-        for j in range(i + 1, datanum):
-            dist = linalg.norm(data[:, i] - data[:, j])
-            distgraph[i, j] = dist
-            distgraph[j, i] = dist
 
     #构建邻接矩阵
     adjgraph = mat(zeros([datanum, datanum]))
     for i in range(datanum):
-        distances = distgraph[i, :]
-        #取最近的n+1个数据，将距离写入邻接矩阵
-        indices = argsort(distances)
+        #计算第i个数据到所有其他数据的距离
+        diff = tile(data[:, i], (1, datanum)) - data
+        squareddiff = square(diff)
+        squareddist = sum(squareddiff, axis = 0) #按列求和
+        indices = argsort(squareddist)
         for count in range(1, n + 1):
             adjgraph[i, indices[0, count]] = 1
             adjgraph[indices[0, count], i] = 1

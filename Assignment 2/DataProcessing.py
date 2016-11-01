@@ -7,7 +7,7 @@ import LearnPCAConjMat
 import DimReduction
 import PredictLabel
 import ISOMAP
-import  ISOMAP_fast
+import ISOMAP_fast
 
 file = raw_input(u'请选择数据集，\'1\'代表sonar，\'2\'代表splice：')
 fchoice = True
