@@ -7,7 +7,7 @@ import ReadFile
 import LogisticRegression
 import RidgeRegression
 
-case = 2
+case = 0
 if(case == 0):
     trainfile = 'dataset1-a9a-training.txt'
     traindata, trainlabel = ReadFile.readFile(trainfile)

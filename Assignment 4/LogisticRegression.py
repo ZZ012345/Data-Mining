@@ -54,7 +54,7 @@ def calculateLoss(traindata, trainlabel, beta, lamda): #计算损失函数值
     for i in range(T):
         instance = traindata[:, i]
         inslabel = trainlabel[i]
-        loss = loss + math.log(1 + math.exp(-inslabel * (beta.dot(instance))))
+        loss = loss + math.log(1 + math.exp(-inslabel * (beta.dot(instance))), math.e)
     frontloss = loss / T
     loss = frontloss + lamda * sum(abs(beta))
     return frontloss, loss
