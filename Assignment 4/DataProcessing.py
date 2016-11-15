@@ -13,22 +13,22 @@ if(case == 0):
     traindata, trainlabel = ReadFile.readFile(trainfile)
     testfile = 'dataset1-a9a-testing.txt'
     testdata, testlabel = ReadFile.readFile(testfile)
-    LogisticRegression.logisticRegression(traindata, trainlabel, testdata, testlabel, lamda = 0, gamma = 0.008)
+    LogisticRegression.logisticRegression(traindata, trainlabel, testdata, testlabel, lamda=0, gamma=0.0015)
 elif(case == 1):
     trainfile = 'covtype-training.txt'
     traindata, trainlabel = ReadFile.readFile(trainfile)
     testfile = 'covtype-testing.txt'
     testdata, testlabel = ReadFile.readFile(testfile)
-    LogisticRegression.logisticRegression(traindata, trainlabel, testdata, testlabel, lamda = 0, gamma = 0.008)
+    LogisticRegression.logisticRegression(traindata, trainlabel, testdata, testlabel, lamda=0, gamma=0.005)
 elif(case == 2):
     trainfile = 'dataset1-a9a-training.txt'
     traindata, trainlabel = ReadFile.readFile(trainfile)
     testfile = 'dataset1-a9a-testing.txt'
     testdata, testlabel = ReadFile.readFile(testfile)
-    RidgeRegression.ridgeRegression(traindata, trainlabel, testdata, testlabel, lamda = 0.01, gamma = 0.008)
+    RidgeRegression.ridgeRegression(traindata, trainlabel, testdata, testlabel, lamda=0, gamma=0.0002)
 else:
     trainfile = 'covtype-training.txt'
     traindata, trainlabel = ReadFile.readFile(trainfile)
     testfile = 'covtype-testing.txt'
     testdata, testlabel = ReadFile.readFile(testfile)
-    RidgeRegression.ridgeRegression(traindata, trainlabel, testdata, testlabel, lamda = 0, gamma = 0.008)
+    RidgeRegression.ridgeRegression(traindata, trainlabel, testdata, testlabel, lamda=0, gamma=0.005)
