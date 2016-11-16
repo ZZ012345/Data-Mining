@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 
 '''
 函数功能：
-
+随机梯度下降求解逻辑回归模型参数
 数据结构：
-
+输入traindata、testdata为array类型，每一列表示一个样本数据，trainlabel、testlabel为由int组成的list类型
+输出的逻辑回归分类器参数beta为array类型
 '''
 
 def logisticRegression(traindata, trainlabel, testdata, testlabel, lamda, gamma):
@@ -21,7 +22,7 @@ def logisticRegression(traindata, trainlabel, testdata, testlabel, lamda, gamma)
     trainerrorlist = [calculateError(traindata, trainlabel, beta)] #存储训练误差
     testerrorlist = [calculateError(testdata, testlabel, beta)] #存储测试误差
     print('initial loss: ', losslist[0], '; initial train error = ', trainerrorlist[0], '; initial test error = ', testerrorlist[0])
-    totaliteration = 10 * T
+    totaliteration = T
     step = int(T / 100)
     plotnode = [i for i in range(step, totaliteration, step)] #存储绘图的节点
     #随机梯度下降
@@ -55,6 +56,7 @@ def logisticRegression(traindata, trainlabel, testdata, testlabel, lamda, gamma)
             testerrorlist.append(testerror)
     plotnode.insert(0, 0)
     showFigure(plotnode, losslist, trainerrorlist, testerrorlist, lamda, gamma) #绘图
+    return beta
 
 
 def calculateLoss(traindata, trainlabel, beta, lamda): #计算损失函数值
