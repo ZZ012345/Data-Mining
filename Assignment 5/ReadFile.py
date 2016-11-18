@@ -7,7 +7,7 @@ from numpy import *
 函数功能：
 从当前目录的filename文件中提取数据，返回样本矩阵、标签以及样本数据的每一维是离散还是连续的
 数据结构：
-样本矩阵每一列代表一个样本，数据类型为float，标签的数据结构为由float组成的list，每个样本都有一个与之对应的标签
+样本矩阵每一列代表一个样本，数据类型为float，标签的数据结构为由int组成的list，每个样本都有一个与之对应的标签
 用于存储样本每一维数值类型的数据为list结构，其中1表示该维是离散数值，0表示连续数值
 '''
 
@@ -33,7 +33,7 @@ def readFile(filename):
                 flinedata.append(float(linedata[count]))
                 count = count + 1
             #存储标签
-            label.append(float(linedata[count]))
+            label.append(int(float(linedata[count])))
             #存储特征
             data.append(flinedata)
 

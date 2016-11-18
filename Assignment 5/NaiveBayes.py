@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from numpy import *
+import math
+import scipy.stats as ss
 
 '''
 函数功能：
@@ -19,8 +21,8 @@ def naiveBayes(sample, data, datatype, label):
             classnum[label[i]] = 1
         else:
             classnum[label[i]] = classnum[label[i]] + 1
-    print(classnum)
-    #统计各类别下各属性的情况
+
+    #统计各属性在各类别下的情况
     info = []
     diffnum = [] #每个属性包含不同属性值的数量，仅适用于离散属性，连续属性取值0
     for i in range(datadim):
@@ -37,16 +39,52 @@ def naiveBayes(sample, data, datatype, label):
                     feature[label[j]][data[i][j]] = feature[label[j]][data[i][j]] + 1
             info.append(feature)
             diffnum.append(len(featureset))
-        #else: #连续属性
-        #   feature
-    print(info)
-    print(diffnum)
+        else: #连续属性
+            feature = {} #{类标1:[均值, 标准差], 类标2:[均值, 标准差]}
+            tempfeature = {} #{类标1:[属性值1, 属性值2], 类标2:[属性值1, 属性值2]}
+            for classname in classnum:
+                feature[classname] = []
+                tempfeature[classname] = []
+            for j in range(datanum):
+                tempfeature[label[j]].append(data[i][j])
+            for classname in classnum:
+                dataarray = array(tempfeature[classname])
+                feature[classname].append(mean(dataarray)) #均值
+                feature[classname].append(std(dataarray)) #标准差
+            info.append(feature)
+            diffnum.append(0)
+
     #计算条件概率
     condprob = {} #{类标1:[属性1的条件概率, 属性2的条件概率], 类标1:[属性1的条件概率, 属性2的条件概率]}
     for classname in classnum:
         condprob[classname] = []
     for i in range(datadim):
-        if(datatype == 1): #离散属性
+        if(datatype[i] == 1): #离散属性
             for classname in condprob:
-                if(sample[i] in info[i][classname]):
-                    condprob[classname].append(info[i][classname][sample[i]])
+                featurenum = info[i][classname].get(sample[i], 0)
+                probability = (featurenum + 1) / (classnum[classname] + diffnum[i]) #拉普拉斯修正
+                condprob[classname].append(probability)
+        else: #连续属性
+            for classname in condprob:
+                featuremean = info[i][classname][0] #取均值
+                featurestd = info[i][classname][1] #取标准差
+                probability = ss.norm.pdf(sample[i], featuremean, featurestd) #正态分布下的概率
+                condprob[classname].append(probability)
+
+    #计算属于每一类的概率
+    classprob = {} #{类标1:属于类别1概率, 类标2:属于类别2的概率}
+    for classname in condprob:
+        problist = condprob[classname]
+        probability = math.log((classnum[classname] + 1) / (datanum + len(classnum))) #拉普拉斯修正
+        for prob in problist:
+            probability = probability + math.log(prob) #取对数，防止下溢
+        classprob[classname] = probability
+
+    #选择概率最高的类别
+    maxclass = [i for i in classprob.keys()][0]
+    maxprob = classprob[maxclass]
+    for classname in classprob:
+        if(classprob[classname] > maxprob):
+            maxclass = classname
+            maxprob = classprob[classname]
+    print(maxclass)
