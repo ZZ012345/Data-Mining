@@ -33,7 +33,10 @@ def readFile(filename):
                 flinedata.append(float(linedata[count]))
                 count = count + 1
             #存储标签
-            label.append(int(float(linedata[count])))
+            temp = int(float(linedata[count]))
+            if(temp == 0):
+                temp = -1
+            label.append(temp)
             #存储特征
             data.append(flinedata)
 
