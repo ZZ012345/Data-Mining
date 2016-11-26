@@ -97,6 +97,7 @@ def naiveBayes(sample, samplelabel, data, label, datatype):
 
     return result, errorrate
 
+
 def calculateErrorRate(label, truelabel):
     errornum = 0
     for i in range(len(label)):
