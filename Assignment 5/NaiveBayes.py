@@ -50,7 +50,12 @@ def naiveBayes(sample, samplelabel, data, label, datatype):
             for classname in classnum:
                 dataarray = array(tempfeature[classname])
                 feature[classname].append(mean(dataarray)) #均值
-                feature[classname].append(std(dataarray)) #标准差
+                #feature[classname].append(std(dataarray)) #标准差，有偏估计
+                ave = sum(tempfeature[classname]) / len(tempfeature[classname])
+                count = 0
+                for t in range(len(tempfeature[classname])):
+                    count += (tempfeature[classname][t] - ave) ** 2
+                feature[classname].append(sqrt(count / (len(tempfeature[classname]) - 1))) #标准差，无偏估计
             info.append(feature)
             diffnum.append(0)
 
