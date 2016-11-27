@@ -42,8 +42,9 @@ def adaboostWithNaiveBayesBySampling(data, label, datatype):
     for iteration in range(1, T):
         errorrate = 1
         while(errorrate >= 0.5): #采用重采样策略
-            samplingdata, samplinglabel = sampling(data, label, sampleweights, datanum) #采样
-            result, errorrate = NaiveBayes.naiveBayes(samplingdata, samplinglabel, samplingdata, samplinglabel, datatype) #训练新的贝叶斯分类器
+            samplingdata, samplinglabel, indices = sampling(data, label, sampleweights, datanum) #采样
+            #result, errorrate = NaiveBayes.naiveBayes(samplingdata, samplinglabel, samplingdata, samplinglabel, datatype) #训练新的贝叶斯分类器
+            result, errorrate = NaiveBayes.naiveBayes(data, label, samplingdata, samplinglabel, datatype)
         print('第', iteration + 1, '个分类器的误差：', errorrate)
         classifiersdata.append(samplingdata)
         classifierslabel.append(samplinglabel)
@@ -51,6 +52,10 @@ def adaboostWithNaiveBayesBySampling(data, label, datatype):
         classifiersweight.append(cweight)
         #更新样本分布
         for i in range(datanum):
+            #try:
+                #sampleweights[i] = sampleweights[i] * math.exp(-cweight * label[i] * result[indices.index(i)])
+            #except ValueError:
+                #pass
             sampleweights[i] = sampleweights[i] * math.exp(-cweight * label[i] * result[i])
         sumweights = sum(sampleweights)
         for i in range(datanum):  #规范化
@@ -75,7 +80,7 @@ def sampling(data, label, weight, size): #采样函数，data表示待采样的�
             indices.append(index - 1)
     samplingdata = data[:, indices]
     samplinglabel = [label[i] for i in indices]
-    return samplingdata, samplinglabel
+    return samplingdata, samplinglabel, indices
 
 
 def test(sample, samplelabel, classifiersweight, classifiersdata, classifierslabel, datatype):

@@ -40,8 +40,9 @@ def adaboostWithNaiveBayes(data, label, datatype):
     #重复训练分类器
     T = 2
     for iteration in range(1, T):
-        newdata, newlabel = generateData(data, label, sampleweights)
-        result, errorrate = NaiveBayes.naiveBayes(newdata, newlabel, newdata, newlabel, datatype)
+        newdata, newlabel, gindices = generateData(data, label, sampleweights)
+        #result, errorrate = NaiveBayes.naiveBayes(newdata, newlabel, newdata, newlabel, datatype)
+        result, errorrate = NaiveBayes.naiveBayes(data, label, newdata, newlabel, datatype)
         print('第', iteration + 1, '个分类器的误差：', errorrate)
         classifiersdata.append(newdata)
         classifierslabel.append(newlabel)
@@ -49,6 +50,7 @@ def adaboostWithNaiveBayes(data, label, datatype):
         classifiersweight.append(cweight)
         #更新样本分布
         for i in range(datanum):
+            #sampleweights[i] = sampleweights[i] * math.exp(-cweight * label[i] * result[gindices[i]])
             sampleweights[i] = sampleweights[i] * math.exp(-cweight * label[i] * result[i])
         sumweights = sum(sampleweights)
         for i in range(datanum):  #规范化
@@ -61,13 +63,17 @@ def adaboostWithNaiveBayes(data, label, datatype):
 def generateData(data, label, weight):
     gdata = []
     glabel = []
+    gindices = []
+    count = 0
     for i in range(len(weight)):
+        gindices.append(count)
         num = int(round(weight[i] * 10000))
+        count += num
         for j in range(num):
             gdata.append(data[:, i].tolist())
             glabel.append(label[i])
     gdata = array(gdata).T
-    return gdata, glabel
+    return gdata, glabel, gindices
 
 
 def test(sample, samplelabel, classifiersweight, classifiersdata, classifierslabel, datatype):
