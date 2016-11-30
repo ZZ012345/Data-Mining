@@ -41,10 +41,15 @@ def adaboostWithNaiveBayesBySampling(data, label, datatype):
     T = 5
     for iteration in range(1, T):
         errorrate = 1
+        samplingnum = 0
         while(errorrate >= 0.5): #采用重采样策略
-            samplingdata, samplinglabel, indices = sampling(data, label, sampleweights, datanum) #采样
-            #result, errorrate = NaiveBayes.naiveBayes(samplingdata, samplinglabel, samplingdata, samplinglabel, datatype) #训练新的贝叶斯分类器
-            result, errorrate = NaiveBayes.naiveBayes(data, label, samplingdata, samplinglabel, datatype)
+            if(samplingnum < 20): #最大采样次数
+                samplingdata, samplinglabel, indices = sampling(data, label, sampleweights, datanum) #采样
+                #result, errorrate = NaiveBayes.naiveBayes(samplingdata, samplinglabel, samplingdata, samplinglabel, datatype) #训练新的贝叶斯分类器
+                samplingnum += 1
+                result, errorrate = NaiveBayes.naiveBayes(data, label, samplingdata, samplinglabel, datatype)
+            else: #提前终止
+                return [], [], [], []
         print('第', iteration + 1, '个分类器的误差：', errorrate)
         classifiersdata.append(samplingdata)
         classifierslabel.append(samplinglabel)
